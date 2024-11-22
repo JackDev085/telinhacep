@@ -1,19 +1,9 @@
 // Extraindo variáveis do HTML
-const button = document.getElementById("submit");
 const logradouro = document.getElementById("logradouro");
 const estado = document.getElementById("estado");
 const cep = document.getElementById("cep");
 const bairro = document.getElementById("bairro");
 const uf = document.getElementById("uf");
-
-// Ação realizada ao clica no butão de submit
-button.addEventListener("click",e=>{
-
-    // Ao enviar o fomulário não atualizar a página
-    e.preventDefault();
-    // Chamando função principal para buscar cep via API (via cep)
-    buscaCep()
-})
 
 function formataCep(input){
 
@@ -28,6 +18,7 @@ function formataCep(input){
     //atribui ao input o valor depois das verificações
     input.value = valor;
 
+    if (input.value.length===9) buscaCep();
 }
 
 async function buscaCep(){
@@ -60,11 +51,10 @@ async function buscaCep(){
         const json = await response.json();
         if(json.cep == undefined){
             logradouro.value ="";
-            cep.value = "";
+            cep.value = cep_forms;
             bairro.value = "";
             estado.value = "";
             uf.value = "";
-            alert("Cep não encontrado");
             return
         }
         // Se tudo der certo, ele trocará os campos pelo valor dos dados recebidos na requisição
